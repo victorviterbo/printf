@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/08/22 14:59:21 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/05 09:50:46 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,6 @@ int	print_format(char *str, va_list argl)
 			precision = va_arg(argl, int);
 	}
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
-	
-
-}
-
-int	is_in_str(char c, char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (*(str + i) && *(str + i) != c)
-		i++;
-	return (*(str + i) == c);
 }
 
 char	*get_radix(char type, va_list argl)
@@ -85,12 +73,12 @@ char	*get_radix(char type, va_list argl)
 	else if (type == 'd')
 		*radix = ft_ftoa(va_arg(argl, double));
 	else if (type == 'i')
-		*radix = ft_itoa(va_arg(argl, int));
+		*radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'u')
 		*radix = ft_utoa(va_arg(argl, double));
 	else if (type == 'x')
-		*radix = ft_tohex(va_arg(argl, double));
+		*radix = ft_itoa_base(va_arg(argl, double), "0123456789abcdef");
 	else if (type == 'X')
-		*radix = ft_toupper(ft_tohex(va_arg(argl, double)));
+		*radix = ft_itoa_base(va_arg(argl, double), "0123456789ABCDEF");
 	return (radix);
 }
