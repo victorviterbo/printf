@@ -6,16 +6,15 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:34:17 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/09/05 09:45:10 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/07 12:45:18 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_strchr(char *str, char c);
+char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(char *str, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -75,18 +74,4 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	*(substr + i) = '\0';
 	return (substr);
-}
-
-char	*ft_strchr(char *str, char c)
-{
-	size_t	i;
-
-	i = 0;
-	while (*(str + i))
-	{
-		if (*(str + i) == c)
-			return (str + i);
-		i++;
-	}
-	return (NULL);
 }

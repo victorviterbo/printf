@@ -6,15 +6,16 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/09/05 09:50:46 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:36:22 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 int		ft_printf(const char *str, ...);
-char	*ft_strchr(char *str, char c);
 int		print_format(char *str, va_list argl);
+char	*get_radix(char type, va_list argl);
+char	*set_width(char *formated, char *str, int *width);
 
 int	ft_printf(const char *str, ...)
 {
@@ -35,7 +36,7 @@ int	ft_printf(const char *str, ...)
 			continue ;
 		}
 		j = i++;
-		while (*(str + j) && is_in_str(*(str + j), 'cspdiuxX'))
+		while (*(str + j) && !is_in_str(*(str + j), "cspdiuxX"))
 			j++;
 		print_format(ft_substr(*str, i, j + 1 - i), argl);
 		i = j++;
@@ -47,17 +48,23 @@ int	print_format(char *str, va_list argl)
 {
 	t_flags	**flags;
 	char	*formated;
-	char	*width;
-	char	*precision;
+	int		*width;
+	int		*precision;
 
 	if (ft_strchr(str, '#'))
 	{
-		if (ft_strchr(str, '#') < ft_strchr(str, '.'))
-			width = va_arg(argl, int);
-		if (ft_strchr(ft_strchr(str, '.'), '#'))
-			precision = va_arg(argl, int);
+		if (ft_strchr(str, '*') < ft_strchr(str, '.'))
+			*width = va_arg(argl, int);
+		else
+			width = NULL;
+		if (ft_strchr(ft_strchr(str, '.'), '*'))
+			*precision = va_arg(argl, int);
+		else
+			precision = NULL;
 	}
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
+	formated = set_width(formated, str, width);
+	formated = set_precision(formated, str, precision);
 }
 
 char	*get_radix(char type, va_list argl)
@@ -81,4 +88,29 @@ char	*get_radix(char type, va_list argl)
 	else if (type == 'X')
 		*radix = ft_itoa_base(va_arg(argl, double), "0123456789ABCDEF");
 	return (radix);
+}
+
+char	*set_width(char *formated, char *str, int *width)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (is_in_str('+', str) && is_in_str(*(str + ft_strlen(str) - 1), "dixX") && *formated != '-')
+		formated = ft_strjoin("+", formated);
+	if (!width)
+	{
+		while (is_in_str(*(str + i), "-+0 "))
+			i++;
+		j = i;
+		while (0 <= *(str + j) && (str + j) <= 9)
+			j++;
+		*width = ft_atoi(ft_substr(str, i, j - i));
+	}
+	while (ft_strlen(formated) < *width)
+	{
+		if (is_in_str('-', str))
+			formated = ft_strjoin(" ", formated);
+	}
+	return (formated);	
 }
