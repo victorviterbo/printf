@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/09/05 09:45:28 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/25 10:31:52 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		ft_atoi(const char *str);
 char	*ft_ftoa(double number);
+char	*ft_round(char *str, int precision, char type);
 
 int	ft_atoi(const char *str)
 {
@@ -49,7 +50,9 @@ char	*ft_ftoa(double number)
 	long	rounded_num;
 
 	if (number < 0)
-		rounded_num = -(int)(-number);
+		rounded_num = -(long)(-number);
+	else
+		rounded_num = (long)(number);
 	integer = ft_itoa(rounded_num);
 	if (rounded_num == number)
 		return (ft_strjoin(integer, ".000000"));
@@ -62,4 +65,23 @@ char	*ft_ftoa(double number)
 	while (ft_strlen(decimal) < 6)
 		decimal = ft_strjoin(decimal, "0");
 	return (ft_strjoin(ft_strjoin(integer, "."), decimal));
+}
+
+char	*ft_round(char *str, int precision, char type)
+{
+	if (type == 's')
+		return (ft_substr(str, 0, precision));
+	else if (ft_strlen(str) < (ft_strchr(str, '.') + precision))
+		return (str);
+	else if (precision <= 0)
+	{
+		*(ft_strchr(str, '.') - 1) += (*(ft_strchr(str, '.') + 1) >= 5);
+		return (ft_substr(str, 0, ft_strchr(str, '.') - str));
+	}
+	else
+	{
+		*(ft_strchr(str, '.') + precision) += (*(ft_strchr(str, '.')
+			+ precision + 1) >= 5);
+		return (ft_substr(str, 0, ft_strchr(str, '.') - str + precision));
+	}
 }

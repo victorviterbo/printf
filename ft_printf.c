@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/09/07 15:36:22 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/24 16:54:45 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ int	print_format(char *str, va_list argl)
 	int		*width;
 	int		*precision;
 
+	width = malloc(sizeof(int));
+	precision = malloc(sizeof(int));
+	if (!width || !precision)
+		return (NULL);
 	if (ft_strchr(str, '#'))
 	{
 		if (ft_strchr(str, '*') < ft_strchr(str, '.'))
@@ -82,7 +86,7 @@ char	*get_radix(char type, va_list argl)
 	else if (type == 'i')
 		*radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'u')
-		*radix = ft_utoa(va_arg(argl, double));
+		*radix = ft_utoa(va_arg(argl, double)); // TODO
 	else if (type == 'x')
 		*radix = ft_itoa_base(va_arg(argl, double), "0123456789abcdef");
 	else if (type == 'X')
@@ -94,10 +98,19 @@ char	*set_width(char *formated, char *str, int *width)
 {
 	size_t	i;
 	size_t	j;
+	char	placeholder;
 
 	i = 0;
-	if (is_in_str('+', str) && is_in_str(*(str + ft_strlen(str) - 1), "dixX") && *formated != '-')
+	if (is_in_str('+', str) && is_in_str(*(str + ft_strlen(str) - 1), "dixX")
+		&& *formated != '-')
 		formated = ft_strjoin("+", formated);
+	else if (is_in_str(' ', str)
+		&& is_in_str(*(str + ft_strlen(str) - 1), "dixX") && *formated != '-')
+		formated = ft_strjoin(" ", formated);
+	if (is_in_str('0', str) && is_in_str(*(str + ft_strlen(str) - 1), "dixX"))
+		placeholder = '0';
+	else
+		placeholder = ' ';
 	if (!width)
 	{
 		while (is_in_str(*(str + i), "-+0 "))
@@ -110,7 +123,31 @@ char	*set_width(char *formated, char *str, int *width)
 	while (ft_strlen(formated) < *width)
 	{
 		if (is_in_str('-', str))
-			formated = ft_strjoin(" ", formated);
+			formated = ft_strjoin(placeholder, formated);
+		else
+			formated = ft_strjoin(formated, placeholder);
 	}
-	return (formated);	
+	return (formated);
+}
+
+char	*set_precision(char *formated, char *str, int *precision)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!precision)
+	{
+		while (is_in_str(*(str + i), "-+0 "))
+			i++;
+		j = i;
+		while (0 <= *(str + j) && (str + j) <= 9)
+			j++;
+		*precision = ft_atoi(ft_substr(str, i, j - i));
+	}
+	if (is_in_str(*(str + ft_strlen(str) - 1), "duxX"))
+	{
+		formated = ft_round(formated, precision, *(str + ft_strlen(str) - 1));
+	}
+	return (formated);
 }
