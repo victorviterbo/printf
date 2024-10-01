@@ -6,19 +6,28 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 09:24:56 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/01 12:19:35 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:27:06 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include <libc.h>
 #include <float.h>
 #include <limits.h>
 #include "ft_printf.h"
 
 int	main(void)
 {
-	//printf("test0 %010i\n", 123);
-	//ft_printf("test1 %i_ _test2 %i\n", 123, 456);
+	void	*str;
+
+	str = malloc(sizeof(void));
 	ft_printf("test1 %0-19.2d\n", 456.789);
 	ft_printf("test2 %0-19.2u\n", -12);
+	printf("test3 ok >%p<\n", str); // handle the 0x at the beggining
+	ft_printf("test3 >%p<\n", str); // handle the 0x at the beggining
+	printf("test4 ok %x\n", 456);
+	ft_printf("test4 %x\n", 456);
+	printf("test5 ok %019.2X\n", 456);
+	ft_printf("test5 %019.2X\n", 456);
+	printf("0 test %c, %s, %p, %05.2d, %05.3i, %05u, %05x, %05X\n", 'a', "bla", str, 123.23456, 123, 123, 123, 123);
+	ft_printf("width tests %+d\n", -182.123);
 }

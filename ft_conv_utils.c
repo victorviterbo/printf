@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/01 12:14:45 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:39:16 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		ft_atoi(const char *str);
 char	*ft_ftoa_base(double number, char *base);
 char	*ft_round(char *str, int precision, char type);
-char	*ft_utoa(long number);
+char	*ft_utoa_base(long number, char *base);
 char	*ft_ctoa(char c);
 
 int	ft_atoi(const char *str)
@@ -50,7 +50,6 @@ char	*ft_ftoa_base(double number, char *base)
 	char	*decimal;
 	long	rounded_num;
 
-	printf("number at first is %f\n", number);
 	if (number < 0)
 		rounded_num = -(long)(-number);
 	else
@@ -58,13 +57,9 @@ char	*ft_ftoa_base(double number, char *base)
 	integer = ft_itoa_base(rounded_num, base);
 	if (rounded_num == number)
 		return (ft_strjoin(integer, ".000000"));
-	printf("integer is %s\n", integer);
-	printf("now feeding %f into decimal decipher\n", number - rounded_num);
 	decimal = ft_itoa_base_decimal(number - rounded_num, base);
-	printf("decimal is %s\n", decimal);
 	while (ft_strlen(decimal) < 6)
 		decimal = ft_strjoin(decimal, "0");
-	printf("on part la dessus ?\n");
 	integer = ft_strjoin(ft_strjoin(integer, "."), decimal);
 	return (integer);
 }
@@ -88,13 +83,12 @@ char	*ft_round(char *str, int precision, char type)
 	}
 }
 
-char	*ft_utoa(long number)
+char	*ft_utoa_base(long number, char *base)
 {
 	if (number < 0)
-		return (ft_itoa_base((uint32_t)(number + UINT32_MAX + 1)
-			, "0123456789"));
+		return (ft_itoa_base((uint32_t)(number + UINT32_MAX + 1), base));
 	else
-		return (ft_itoa_base((uint32_t)(number), "0123456789"));
+		return (ft_itoa_base((uint32_t)(number), base));
 }
 
 char	*ft_ctoa(char c)

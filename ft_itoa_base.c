@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:28:28 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/01 12:12:06 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:40:14 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ char	*ft_itoa_base_decimal(double number, char *base)
 	if (!number_str)
 		return (NULL);
 	log = 1 / (double)ft_strlen(base);
-	printf("number = %f, log = %f\n", number, log);
 	while (number > 0)
 	{
 		*(number_str + i) = *(base + (int)(number / log));
@@ -65,7 +64,6 @@ char	*ft_itoa_base_decimal(double number, char *base)
 		i++;
 	}
 	*(number_str + i) = '\0';
-	printf("decimal as str = %s\n", number_str);
 	return (number_str);
 }
 

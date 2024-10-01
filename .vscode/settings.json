@@ -2,6 +2,7 @@
 	"files.associations": {
 		"chrono": "c",
 		"ios": "c",
-		"ft_printf.h": "c"
+		"ft_printf.h": "c",
+		"sstream": "c"
 	}
 }
