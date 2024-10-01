@@ -6,22 +6,18 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 09:24:56 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/08/29 19:13:50 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/26 11:19:51 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <float.h>
 #include <limits.h>
+#include "ft_printf.h"
 
 int	main(void)
 {
-	int a = 10;
-	int b = ++a;
-	double d = 100000/DBL_MAX;
-	int e = (int)d;
-	printf("test: %d\n", INT_MAX);
-	printf("test: %d\n", 1/DBL_MAX);
-	printf("test: %f\n", d);
-	printf("test: %ld\n", e);
+	//printf("test0 %010i\n", 123);
+	//ft_printf("test1 %i_ _test2 %i\n", 123, 456);
+	ft_printf("test3 %19.2d", 456.789);
 }

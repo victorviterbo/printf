@@ -6,15 +6,16 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:28:28 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/08/22 15:44:17 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:14:25 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 char			*ft_itoa_base(int n, char *base);
-static size_t	get_log(size_t n, int base_size);
-static size_t	get_size(size_t n, int base_size);
+char			*ft_itoa_base_decimal(double n, char *base);
+static size_t	get_log(size_t n, float base_size);
+static size_t	get_size(size_t n, float base_size);
 static size_t	handle_neg(long *number, char *number_str);
 
 char	*ft_itoa_base(int n, char *base)
@@ -34,24 +35,59 @@ char	*ft_itoa_base(int n, char *base)
 	{
 		*(number_str + i) = *(base + number / log);
 		number %= log;
-		log /= 10;
+		log /= ft_strlen(base);
 		i++;
 	}
 	*(number_str + i) = '\0';
 	return (number_str);
 }
 
-static size_t	get_log(size_t n, int base_size)
+char	*ft_itoa_base_decimal(double number, char *base)
+{
+	char	*number_str;
+	double	log;
+	size_t	i;
+
+	i = 0;
+	if (number < 0)
+		number *= -1;
+	number_str = malloc((get_size(number, 1 / ft_strlen(base)) + 2)
+			* sizeof(char));
+	if (!number_str)
+		return (NULL);
+	log = 1 / (double)ft_strlen(base);
+	printf("number = %f, log = %f\n", number, log);
+	while (number > 0)
+	{
+		*(number_str + i) = *(base + (int)(number / log));
+		number = number - (log * (int)(number / log));
+		log /= ft_strlen(base);
+		i++;
+	}
+	*(number_str + i) = '\0';
+	printf("decimal as str = %s\n", number_str);
+	return (number_str);
+}
+
+static size_t	get_log(size_t n, float base_size)
 {
 	size_t	log;
 
 	log = 1;
-	while (n > (base_size * log))
-		log *= base_size;
+	if (base_size > 1)
+	{
+		while (n / (base_size * log) > 1)
+			log *= base_size;
+	}
+	else
+	{
+		while (n / (base_size * log) < 1)
+			log *= base_size;
+	}
 	return (log);
 }
 
-static size_t	get_size(size_t n, int base_size)
+static size_t	get_size(size_t n, float base_size)
 {
 	size_t	size;
 
@@ -63,7 +99,7 @@ static size_t	get_size(size_t n, int base_size)
 		size++;
 		n *= -1;
 	}
-	while (n)
+	while (n >= (1 / base_size))
 	{
 		size++;
 		n /= base_size;
@@ -75,7 +111,7 @@ static size_t	handle_neg(long *number, char *number_str)
 {
 	if (*number < 0)
 	{
-		*(number_str + 0) = '-';
+		*(number_str) = '-';
 		*number = -(*number);
 		return (1);
 	}

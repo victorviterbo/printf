@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:34:17 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/09/24 16:44:23 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/26 12:59:00 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(char *str, char c);
+size_t	ft_strlen(char *str);
+char	*ft_strdup(const char *s1);
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -24,23 +26,27 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	joined = malloc((ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1)
 			* sizeof(char));
+	printf("joining \n>%s<\n and \n>%s<\n", s1, s2);
 	if (!joined)
+	{
+		printf("MALLOC ERROR \n");
 		return (NULL);
+	}
 	i = 0;
-	j = 0;
 	while (*(s1 + i))
 	{
-		*(joined + j) = *(s1 + i);
+		*(joined + i) = *(s1 + i);
 		i++;
-		j++;
 	}
-	i = 0;
-	while (*(s2 + i))
+	j = 0;
+	while (*(s2 + j))
 	{
-		*(joined + j) = *(s2 + i);
+		*(joined + i) = *(s2 + j);
 		i++;
 		j++;
 	}
+	*(joined + i) = '\0';
+	printf("joined = \n>%s<\n", joined);
 	return (joined);
 }
 
@@ -74,4 +80,32 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	*(substr + i) = '\0';
 	return (substr);
+}
+
+size_t	ft_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (*(str + i))
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	char	*duplicate;
+	size_t	i;
+
+	i = 0;
+	duplicate = malloc((ft_strlen((char *)s1) + 1) * sizeof(char));
+	if (!duplicate)
+		return (NULL);
+	while (*(s1 + i) && i < ft_strlen((char *)s1) - 1)
+	{
+		*(duplicate + i) = *(s1 + i);
+		i++;
+	}
+	*(duplicate + i) = '\0';
+	return (duplicate);
 }

@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:01:16 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/08/22 14:55:37 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:25:40 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,23 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-typedef struct s_flags{
-	bool			active;
-	char			flag_name;
-	struct s_flag	*next;
-}	t_flags;
+#include <stdio.h>
 
-int		ft_printf(const char *str, ...);
-char	*ft_strchr(char *str, char c);
-int		print_format(char *str, va_list argl);
-void	set_flag(t_flags **flags, char *flag_name, bool active);
-bool	get_flag(t_flags **flags, char *flag_name);
-char	*ft_strchr(char *str, char c);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-int		ft_atoi(const char *str);
+int				ft_printf(const char *str, ...);
+int				print_format(char *str, va_list argl);
+char			*get_radix(char type, va_list argl);
+char			*set_width(char *formated, char *str, int *width);
+char			*set_precision(char *formated, char *str, int *precision);
+char			*ft_itoa_base(int n, char *base);
+char			*ft_itoa_base_decimal(double n, char *base);
+int				ft_atoi(const char *str);
+char			*ft_ftoa_base(double number, char *base);
+char			*ft_round(char *str, int precision, char type);
+char			*ft_strjoin(char const *s1, char const *s2);
+char			*ft_substr(char const *s, unsigned int start, size_t len);
+char			*ft_strchr(char *str, char c);
+size_t			ft_strlen(char *str);
+char			*ft_ctoa(char c);
+char			*ft_strdup(const char *s1);
 
 #endif
