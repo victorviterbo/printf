@@ -6,14 +6,14 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/01 10:38:28 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:20:50 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 int		ft_printf(const char *str, ...);
-int		print_format(char *str, va_list argl);
+void	print_format(char *str, va_list argl);
 char	*get_radix(char type, va_list argl);
 char	*set_width(char *formated, char *str, int *width);
 char	*set_precision(char *formated, char *str, int *precision);
@@ -39,7 +39,6 @@ int	ft_printf(const char *str, ...)
 		j = ++i;
 		while (*(str + j - 1) && !ft_strchr("cspdiuxX", *(str + j - 1)))
 			j++;
-		printf("str = %s, i = %zu, j = %zu\n", ft_substr(str, i, j - i), i, j);
 		print_format(ft_substr(str, i, j - i), argl);
 		i = j;
 	}
@@ -47,49 +46,35 @@ int	ft_printf(const char *str, ...)
 	return (1);
 }
 
-int	print_format(char *str, va_list argl)
+void	print_format(char *str, va_list argl)
 {
 	char	*formated;
 	int		*width;
 	int		*precision;
 
-	if (ft_strchr(str, '*'))
+	width = NULL;
+	precision = NULL;
+	if (ft_strchr(str, '#'))
 	{
-		if (!ft_strchr(str, '.') || (ft_strchr(str, '*') < ft_strchr(str, '.')))
+		if (!ft_strchr(str, '.') || (ft_strchr(str, '#') < ft_strchr(str, '.')))
 		{
 			width = malloc(sizeof(int));
 			if (!width)
-				return (-1);
+				return ;
 			*width = va_arg(argl, int);
-			printf("getting width from var %i\n", *width);
 		}
-		else
-			width = NULL;
-		if (ft_strchr(str, '.') && ft_strchr(ft_strchr(str, '.'), '*'))
+		if (ft_strchr(str, '.') && ft_strchr(ft_strchr(str, '.'), '#'))
 		{
 			precision = malloc(sizeof(int));
 			if (!precision)
-				return (-1);
+				return ;
 			*precision = va_arg(argl, int);
-			printf("getting precision from var %i\n", *precision);
 		}
-		else
-			precision = NULL;
 	}
-	else
-	{
-		precision = NULL;
-		width = NULL;
-	}
-	printf("width = %p, precision = %p\n", width, precision);
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
-	printf("formated after radix = %s,\n", formated);
 	formated = set_precision(formated, str, precision);
-	printf("formated after precision = %s,\n", formated);
 	formated = set_width(formated, str, width);
-	printf("formated after width = %s,\n", formated);
 	write(1, formated, ft_strlen(formated));
-	return (0);
 }
 
 char	*get_radix(char type, va_list argl)
@@ -108,7 +93,7 @@ char	*get_radix(char type, va_list argl)
 	else if (type == 'i')
 		radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'u')
-		*radix = ft_utoa(va_arg(argl, double));
+		radix = ft_utoa(va_arg(argl, int));
 	else if (type == 'x')
 		radix = ft_ftoa_base(va_arg(argl, double), "0123456789abcdef");
 	else if (type == 'X')
@@ -122,16 +107,12 @@ char	*set_width(char *formated, char *str, int *width)
 	char	*placeholder;
 	char	*flags;
 
-	i = 0;
-
+	i = -1;
 	flags = ft_strdup("\0");
 	if (!width)
 	{
-		while (ft_strchr("-+0 ", *(str + i)))
-		{
+		while (ft_strchr("-+0 ", *(str + ++i)))
 			flags = ft_strjoin(flags, ft_ctoa(*(str + i)));
-			i++;
-		}
 		str = ft_substr(str, i, ft_strlen(str) - i);
 		i = 0;
 		while ('0' <= *(str + i) && *(str + i) <= '9')
@@ -139,28 +120,26 @@ char	*set_width(char *formated, char *str, int *width)
 		if (i == 0)
 			return (formated);
 		width = malloc(sizeof(int));
+		if (!width)
+			return (NULL);
 		*width = ft_atoi(ft_substr(str, 0, i));
 	}
 	if (ft_strchr(flags, '+') && ft_strchr("dixX", *(str + ft_strlen(str) - 1))
 		&& *formated != '-')
 		formated = ft_strjoin("+", formated);
-	else if (ft_strchr(flags, ' ')
-		&& ft_strchr("dixX", *(str + ft_strlen(str) - 1)) && *formated != '-')
+	else if (ft_strchr(flags, ' ') && !(ft_strchr("+-", *formated))
+		&& ft_strchr("dixX", *(str + ft_strlen(str) - 1)))
 		formated = ft_strjoin(" ", formated);
-	if (ft_strchr(flags, '0') && ft_strchr("dixX", *(str + ft_strlen(str) - 1))
-		&& !(ft_strchr(flags, '-') && *(str + ft_strlen(str) - 1) == 'i'))
+	placeholder = " ";
+	if (ft_strchr(flags, '0') && ft_strchr("diuxX", *(str + ft_strlen(str) - 1))
+		&& !(ft_strchr(flags, '-'))) // && *(str + ft_strlen(str) - 1) == 'i')
 		placeholder = "0";
-	else
-		placeholder = " ";
-	printf("width = %i\n", *width);
-	while (ft_strlen(formated) < (size_t)*width)
+	while (ft_strlen(formated) < (size_t) * width)
 	{
-		printf("formated = %s, placeholder = >%s<\n", formated, placeholder);
 		if (ft_strchr(flags, '-'))
 			formated = ft_strjoin(placeholder, formated);
 		else
 			formated = ft_strjoin(formated, placeholder);
-		printf("new formated = %s, placeholder = >%s<\n", formated, placeholder);
 	}
 	return (formated);
 }
@@ -171,28 +150,23 @@ char	*set_precision(char *formated, char *str, int *precision)
 
 	if (!precision)
 	{
-		printf("\n HELLO \n");
 		str = ft_strchr(str, '.');
-		printf("str in formated = %p\n", str);
 		if (!str)
 			return (formated);
 		str++;
-		printf("new str >%c< \n", *(str));
 		i = 0;
 		while (*(str + i) && '0' <= *(str + i) && *(str + i) <= '9')
 			i++;
-		printf("i = %zu\n", i);
-		if (i == 0)
-			return (formated);
 		precision = malloc(sizeof(int));
 		if (!precision)
 			return (NULL);
-		*precision = ft_atoi(ft_substr(str, 0, i));
+		
+		if (i == 0)
+			*precision = 0;
+		else
+			*precision = ft_atoi(ft_substr(str, 0, i));
 	}
-	printf("precision is now %i", *precision);
-	if (ft_strchr("duxX", *(str + ft_strlen(str) - 1)))
-	{
+	if (ft_strchr("dxX", *(str + ft_strlen(str) - 1)))
 		formated = ft_round(formated, *precision, *(str + ft_strlen(str) - 1));
-	}
 	return (formated);
 }

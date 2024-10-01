@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"chrono": "c",
-		"ios": "c"
+		"ios": "c",
+		"ft_printf.h": "c"
 	}
 }

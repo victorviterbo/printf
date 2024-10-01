@@ -6,15 +6,15 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:34:17 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/09/26 12:59:00 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:17:06 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(char *str, char c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(char *str);
 char	*ft_strdup(const char *s1);
 
@@ -24,14 +24,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	unsigned int	i;
 	unsigned int	j;
 
+	if (!s1 || ! s2)
+		return (NULL);
 	joined = malloc((ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1)
 			* sizeof(char));
-	printf("joining \n>%s<\n and \n>%s<\n", s1, s2);
 	if (!joined)
-	{
-		printf("MALLOC ERROR \n");
 		return (NULL);
-	}
 	i = 0;
 	while (*(s1 + i))
 	{
@@ -46,7 +44,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	*(joined + i) = '\0';
-	printf("joined = \n>%s<\n", joined);
 	return (joined);
 }
 

@@ -6,19 +6,19 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:28:28 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/09/26 12:14:25 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:12:06 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char			*ft_itoa_base(int n, char *base);
+char			*ft_itoa_base(long n, char *base);
 char			*ft_itoa_base_decimal(double n, char *base);
 static size_t	get_log(size_t n, float base_size);
 static size_t	get_size(size_t n, float base_size);
 static size_t	handle_neg(long *number, char *number_str);
 
-char	*ft_itoa_base(int n, char *base)
+char	*ft_itoa_base(long n, char *base)
 {
 	char	*number_str;
 	size_t	log;
