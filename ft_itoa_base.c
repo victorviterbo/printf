@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:28:28 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/14 16:41:28 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/14 21:39:01 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char	*ft_itoa_base(long n, char *base)
 	number_str = malloc((get_size(number, ft_strlen(base)) + 2) * sizeof(char));
 	if (!number_str)
 		return (NULL);
+	//printf("n is %i", n);
 	i = handle_neg(&number, number_str);
 	log = get_log(number, ft_strlen(base));
 	while (log)

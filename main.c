@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 09:24:56 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/14 19:54:25 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/14 21:42:04 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@
 
 int	main(void)
 {
-	void	*str;
+	//void	*str;
 
-	str = malloc(sizeof(void));
+	//str = malloc(sizeof(void));
 	/*printf("\001\002\007\v\010\f\r\n");
 	printf("><><><\n");
 	ft_printf("\001\002\007\v\010\f\r\n");*/
 	printf("----------------------\n");
-	printf("test1 %0-19.2d\n", 456);
+	printf("test1 %19.2d\n", 456);
 	printf("><><><\n");
 	printf("TF DID U SAY ?\n");
-	ft_printf("test1 %0-19.2d\n", 456);
-	printf("----------------------\n");
+	ft_printf("test1 %19.2d\n", 456);
+	printf("----------------------\n"); //OK!
 	/*
 	printf("test2 %0-19.2u\n", -12);
 	printf("><><><\n");

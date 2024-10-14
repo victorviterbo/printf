@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/14 19:56:11 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/14 21:41:30 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	print_format(char *str, va_list argl)
 	}
 	//write(1, "1", 1);
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
-	printf("formated = >%s<\n", formated);
+	//printf("formated = >%s<\n", formated);
 	//write(1, "2", 1);
 	formated = set_precision(formated, str, precision);
 	//write(1, "3", 1);
@@ -94,7 +94,7 @@ char	*get_radix(char type, va_list argl)
 	else if (type == 'p')
 		radix = ft_itoa_base((long)va_arg(argl, void *), "0123456789abcdef");
 	else if (type == 'd')
-		radix = ft_itoa_base(va_arg(argl, double), "0123456789");
+		radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'i')
 		radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'u')
@@ -147,9 +147,9 @@ char	*set_width(char *formated, char *str, int *width)
 	while (ft_strlen(formated) < (size_t) * width)
 	{
 		if (ft_strchr(flags, '-'))
-			formated = ft_strjoin(placeholder, formated);
-		else
 			formated = ft_strjoin(formated, placeholder);
+		else
+			formated = ft_strjoin(placeholder, formated);
 	}
 	return (formated);
 }
