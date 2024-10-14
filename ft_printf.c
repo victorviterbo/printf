@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/14 16:43:01 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:56:11 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	print_format(char *str, va_list argl)
 	}
 	//write(1, "1", 1);
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
+	printf("formated = >%s<\n", formated);
 	//write(1, "2", 1);
 	formated = set_precision(formated, str, precision);
 	//write(1, "3", 1);
@@ -93,15 +94,20 @@ char	*get_radix(char type, va_list argl)
 	else if (type == 'p')
 		radix = ft_itoa_base((long)va_arg(argl, void *), "0123456789abcdef");
 	else if (type == 'd')
-		radix = ft_ftoa_base(va_arg(argl, double), "0123456789");
+		radix = ft_itoa_base(va_arg(argl, double), "0123456789");
 	else if (type == 'i')
 		radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'u')
 		radix = ft_utoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'x')
-		radix = ft_utoa_base(va_arg(argl, unsigned int), "0123456789abcdef");
+		radix = ft_itoa_base(va_arg(argl, unsigned int), "0123456789abcdef");
 	else if (type == 'X')
-		radix = ft_utoa_base(va_arg(argl, unsigned int), "0123456789ABCDEF");
+		radix = ft_itoa_base(va_arg(argl, unsigned int), "0123456789ABCDEF");
+	if (!radix)
+	{
+		printf("EXITING !!\n");
+		return (NULL);
+	}
 	return (radix);
 }
 
@@ -164,13 +170,12 @@ char	*set_precision(char *formated, char *str, int *precision)
 		precision = malloc(sizeof(int));
 		if (!precision)
 			return (NULL);
-		
 		if (i == 0)
 			*precision = 6;
 		else
 			*precision = ft_atoi(ft_substr(str, 0, i));
 	}
-	if (ft_strchr("sd", *(str + ft_strlen(str) - 1)))
+	if (ft_strchr("s", *(str + ft_strlen(str) - 1)))
 		formated = ft_round(formated, *precision, *(str + ft_strlen(str) - 1));
 	return (formated);
 }
