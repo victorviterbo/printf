@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 19:47:37 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:17:35 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,17 @@ char	*ft_utoa_base(long n, char *base)
 	i = 0;
 	if (n < 0)
 	{
-		//printf("number is now %li\n", n);
 		number = UINT64_MAX;
 		number = number + n + 1;
-		//printf("number is now %llu\n", number);
-		//printf("base is now >%s<\n", base);
 	}
 	else
 		number = n;
 	number_str = ft_calloc((get_usize(number, ft_strlen(base)) + 2), sizeof(char));
-	//printf("\n1, calloced %lu\n", (get_size(number, ft_strlen(base)) + 2));
 	if (!number_str)
 		return (NULL);
 	log = get_log(number, ft_strlen(base));
-	//printf("10\n");
 	while (log)
 	{
-		//printf("20, log is now %zu\n", log);
 		*(number_str + i) = *(base + number / log);
 		number %= log;
 		log /= ft_strlen(base);
@@ -85,14 +79,12 @@ size_t	get_usize(unsigned long long n, int base_size)
 	size_t	size;
 
 	size = (n < 0);
-	//printf(" n is %lli in size\n", n);
 	if (n < 0)
 		n *= -1;
 	if (base_size <= 0)
 		return (0);
 	if (!n)
 		return (1);
-	//printf("2 n is %lli in size\n", n);
 	while (n > 0)
 	{
 		size++;

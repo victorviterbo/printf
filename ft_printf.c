@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:14:26 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:16:59 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,12 @@ int	ft_printf(const char *str, ...)
 			if (write(1, (str + i), 1) != -1)
 				printed++;
 			i++;
-			//printf("\nprinted %zu char so far\n", printed);
 			continue ;
 		}
 		j = ++i;
 		while (*(str + j - 1) && !ft_strchr("cspdiuxX", *(str + j - 1)))
 			j++;
 		printed += print_format(ft_substr(str, i, j - i), argl);
-		//printf("\nprinted %zu char so far\n", printed);
 		i = j;
 	}
 	va_end(argl);
@@ -80,22 +78,11 @@ size_t	print_format(char *str, va_list argl)
 			*precision = va_arg(argl, int);
 		}
 	}
-	//write(1, "1", 1);
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
-	//printf("formated = >%s<\n", formated);
-	//write(1, "2", 1);
 	formated = set_precision(formated, str, precision);
-	//printf("formated = >%s<\n", formated);
-	//write(1, "3", 1);
 	formated = set_width(formated, str, width);
-	//printf("formated = >%s<\n", formated);
-	//write(1, "4", 1);
-	//if (write(1, formated, ft_strlen(formated)) != -1)
-	//{
-	//
-	//}
 	if (ft_strlen(formated) > 0)
-		printed = write(1, formated, ft_strlen(formated));//ft_strlen(formated);
+		printed = write(1, formated, ft_strlen(formated));
 	else if (*(str + ft_strlen(str) - 1) == 'c')
 		printed = write(1, formated, 1);
 	if (printed < 0)
