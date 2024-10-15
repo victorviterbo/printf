@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 21:17:12 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:25:12 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ size_t	print_format(char *str, va_list argl)
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
 	formated = set_precision(formated, str, precision);
 	formated = set_width(formated, str, width);
-	if (ft_strlen(formated) > 0)
+	if (ft_strlen(formated))
 		printed = write(1, formated, ft_strlen(formated));
 	else if (*(str + ft_strlen(str) - 1) == 'c')
 		printed = write(1, formated, 1);
