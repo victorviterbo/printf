@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 21:12:34 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:17:12 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,13 +137,10 @@ char	*set_width(char *formated, char *str, int *width)
 	if (ft_strchr(flags, '0') && ft_strchr("dixX", *(str + ft_strlen(str) - 1))
 		&& !(ft_strchr(flags, '-')) && !(ft_strchr(str, '.')))
 		placeholder = "0";
-	while (ft_strlen(formated) < (size_t) * width)
-	{
-		if (ft_strchr(flags, '-'))
-			formated = ft_strjoin(formated, placeholder, 1);
-		else
-			formated = ft_strjoin(placeholder, formated, 2);
-	}
+	while (ft_strlen(formated) < (size_t) * width && ft_strchr(flags, '-'))
+		formated = ft_strjoin(formated, placeholder, 1);
+	while (ft_strlen(formated) < (size_t) * width && !ft_strchr(flags, '-'))
+		formated = ft_strjoin(placeholder, formated, 2);
 	return (free(flags), free(width), formated);
 }
 
