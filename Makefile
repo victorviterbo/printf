@@ -6,13 +6,13 @@
 #    By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 12:45:22 by vviterbo          #+#    #+#              #
-#    Updated: 2024/10/14 16:36:53 by vviterbo         ###   ########.fr        #
+#    Updated: 2024/10/15 12:18:49 by vviterbo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRCS = ft_conv_utils.c ft_itoa_base.c ft_printf.c ft_strutils.c
+SRCS = ft_conv_utils.c ft_itoa_base.c ft_printf.c ft_strutils.c ft_memutils.c
 
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 

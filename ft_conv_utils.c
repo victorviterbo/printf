@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/14 16:38:24 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:10:07 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ char	*ft_ftoa_base(double number, char *base)
 		rounded_num = (long)(number);
 	integer = ft_itoa_base(rounded_num, base);
 	if (rounded_num == number)
-		return (ft_strjoin(integer, ".000000"));
+		return (ft_strjoin(integer, ".000000", 1));
 	decimal = ft_itoa_base_decimal(number - rounded_num, base);
 	while (ft_strlen(decimal) < 6)
-		decimal = ft_strjoin(decimal, "0");
-	integer = ft_strjoin(ft_strjoin(integer, "."), decimal);
+		decimal = ft_strjoin(decimal, "0", 1);
+	integer = ft_strjoin(ft_strjoin(integer, ".", 1), decimal, 3);
 	return (integer);
 }
 
