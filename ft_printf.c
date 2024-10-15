@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:16:59 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:31:47 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int	ft_printf(const char *str, ...)
 	{
 		if (*(str + i) != '%' || (*(str + i) == '%' && *(str + i + 1) == '%'))
 		{
-			if (*(str + i) == '%')
-				i++;
+			i += (*(str + i) == '%');
 			if (write(1, (str + i), 1) != -1)
 				printed++;
 			i++;
