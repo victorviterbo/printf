@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:48:21 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:12:34 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,21 @@ size_t	print_format(char *str, va_list argl)
 	int		*precision;
 	long	printed;
 
-	width = NULL;
-	precision = NULL;
+	width = ft_calloc(1, sizeof(int));
+	if (!width)
+		return (0);
+	precision = ft_calloc(1, sizeof(int));
+	if (!precision)
+		return (free(width), 0);
 	printed = 0;
 	if (!str)
 		return (0);
 	if (ft_strchr(str, '*') && (!ft_strchr(str, '.')
 			|| (ft_strchr(str, '*') < ft_strchr(str, '.'))))
-	{
-		width = ft_calloc(1, sizeof(int));
-		if (!width)
-			return (0);
 		*width = va_arg(argl, int);
-	}
 	if (ft_strchr(str, '*') && ft_strchr(str, '.')
 		&& ft_strchr(ft_strchr(str, '.'), '*'))
-	{
-		precision = ft_calloc(1, sizeof(int));
-		if (!precision)
-			return (0);
 		*precision = va_arg(argl, int);
-	}
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
 	formated = set_precision(formated, str, precision);
 	formated = set_width(formated, str, width);
@@ -81,9 +75,7 @@ size_t	print_format(char *str, va_list argl)
 		printed = write(1, formated, ft_strlen(formated));
 	else if (*(str + ft_strlen(str) - 1) == 'c')
 		printed = write(1, formated, 1);
-	free(str);
-	free(formated);
-	return (printed);
+	return (free(str), free(formated), printed);
 }
 
 char	*get_radix(char type, va_list argl)
@@ -121,29 +113,18 @@ char	*set_width(char *formated, char *str, int *width)
 	char	*placeholder;
 	char	*flags;
 
-	i = -1;
+	i = 0;
 	flags = ft_strdup("\0");
 	if (!flags)
-		return (NULL);
-	if (!width)
+		return (free(width), NULL);
+	if (!*width)
 	{
-		while (ft_strchr("-+0 ", *(str + ++i)))
-			flags = ft_strjoin(flags, ft_ctoa(*(str + i)), 1);
-		str += i;
-		i = 0;
+		while (ft_strchr("-+0 ", *(str++)))
+			flags = ft_strjoin(flags, ft_ctoa(*(str)), 1);
 		while ('0' <= *(str + i) && *(str + i) <= '9')
 			i++;
 		if (i == 0)
-		{
-			free(flags);
-			return (formated);
-		}
-		width = ft_calloc(1, sizeof(int));
-		if (!width)
-		{
-			free(flags);
-			return (NULL);
-		}
+			return (free(flags), free(width), formated);
 		*width = ft_atoi(ft_substr(str, 0, i));
 	}
 	if (ft_strchr(flags, '+') && ft_strchr("dixX", *(str + ft_strlen(str) - 1))
@@ -163,9 +144,7 @@ char	*set_width(char *formated, char *str, int *width)
 		else
 			formated = ft_strjoin(placeholder, formated, 2);
 	}
-	free(flags);
-	free(width);
-	return (formated);
+	return (free(flags), free(width), formated);
 }
 
 char	*set_precision(char *formated, char *str, int *precision)
@@ -173,29 +152,24 @@ char	*set_precision(char *formated, char *str, int *precision)
 	size_t	i;
 	char	*truncated;
 
-	if (!precision)
+	if (!*precision)
 	{
 		str = ft_strchr(str, '.');
 		if (!str)
-			return (formated);
+			return (free(precision), formated);
 		str++;
 		i = 0;
 		while (*(str + i) && '0' <= *(str + i) && *(str + i) <= '9')
 			i++;
-		precision = ft_calloc(1, sizeof(int));
-		if (!precision)
-			return (NULL);
 		if (i == 0)
-			*precision = 6;
+			return (free(precision), formated);
 		else
 			*precision = ft_atoi(ft_substr(str, 0, i));
 	}
 	if (*(str + ft_strlen(str) - 1) == 's')
 	{
 		truncated = ft_substr(formated, 0, *precision);
-		free(formated);
-		return (truncated);
+		return (free(formated), truncated);
 	}
-	free(precision);
-	return (formated);
+	return (free(precision), formated);
 }

@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 09:24:56 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:25:56 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:02:05 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ int	main(void)
 	void	*str;
 
 	str = malloc(sizeof(void));
+	printf("----------------------\n"); //OK !
+	printf("%%%c", 'x');
+	printf("\n><><><\n");
+	ft_printf("%%%c", 'x');
 	printf("\n----------------------\n"); //OK !
 	printf("%i", printf("\001\002\007\v\010\f\r\n") - ft_printf("\001\002\007\v\010\f\r\n"));
 	printf("\n----------------------\n"); //OK !
@@ -43,10 +47,6 @@ int	main(void)
 	printf("\001\002\007\v\010\f\r\n");
 	printf("><><><\n");
 	ft_printf("\001\002\007\v\010\f\r\n");
-	printf("----------------------\n"); //OK !
-	printf("%%%c", 'x');
-	printf("\n><><><\n");
-	ft_printf("%%%c", 'x');
 	printf("\n----------------------\n"); //OK !
 	printf("> %%<");
 	printf("\n><><><\n");
