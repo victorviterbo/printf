@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:34:17 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 17:12:21 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:19:34 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,18 @@ char	*ft_strjoin(char const *s1, char const *s2, int in_place)
 	if (!joined && in_place)
 	{
 		if (in_place == 1 || in_place == 3)
-		{
-			//printf("FREEING S1\n");
 			free((void *)s1);
-		}
 		else if (in_place == 2 || in_place == 3)
-		{
-			//printf("FREEING S2\n");
 			free((void *)s2);
-		}
 		return (NULL);
 	}
 	ft_memmove(joined, s1, ft_strlen(s1));
 	ft_memmove(joined + ft_strlen(s1), s2, s2len);
 	*(joined + ft_strlen(s1) + s2len) = '\0';
 	if (in_place == 1 || in_place == 3)
-	{
-		//printf("FREEING S1\n");
 		free((void *)s1);
-	}
 	else if (in_place == 2 || in_place == 3)
-	{
-		//printf("FREEING S2\n");
 		free((void *)s2);
-	}
 	return (joined);
 }
 
@@ -111,8 +99,8 @@ char	*ft_strdup(const char *s1)
 {
 	char	*duplicate;
 
-	//if (!s1)
-	//	return (NULL);
+	if (!s1)
+		return (NULL);
 	duplicate = ft_calloc(ft_strlen(s1) + 1, sizeof(char));
 	if (!duplicate)
 		return (NULL);

@@ -6,34 +6,35 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:28:28 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 16:30:32 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:48:19 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char			*ft_itoa_base(long n, char *base);
-char			*ft_itoa_base_decimal(double number, char *base);
-static size_t	get_log(size_t n, float base_size);
-static size_t	get_size(size_t n, float base_size);
-static size_t	handle_neg(long *number, char *number_str);
+char	*ft_itoa_base(long long n, char *base);
+size_t	get_log(size_t n, size_t base_size);
+size_t	get_size(long long n, int base_size);
+size_t	handle_neg(long long *number, char *number_str);
 
-char	*ft_itoa_base(long n, char *base)
+char	*ft_itoa_base(long long n, char *base)
 {
-	char	*number_str;
-	size_t	log;
-	size_t	i;
-	long	number;
+	char		*number_str;
+	size_t		log;
+	size_t		i;
+	long long	number;
 
 	number = n;
+	//printf("COUCOU %lli\n", n);
 	number_str = ft_calloc((get_size(number, ft_strlen(base)) + 2), sizeof(char));
 	if (!number_str)
 		return (NULL);
-	//printf("n is %i", n);
+	//printf("n is %lli\n", n);
 	i = handle_neg(&number, number_str);
 	log = get_log(number, ft_strlen(base));
 	while (log)
 	{
+		//printf("ACCESSING >%llu<th element of base of size %zu, log is %zu\n", number / log, ft_strlen(base), log);
 		*(number_str + i) = *(base + number / log);
 		number %= log;
 		log /= ft_strlen(base);
@@ -43,62 +44,34 @@ char	*ft_itoa_base(long n, char *base)
 	return (number_str);
 }
 
-char	*ft_itoa_base_decimal(double number, char *base)
+size_t	get_log(size_t n, size_t base_size)
 {
-	char	*number_str;
-	double	log;
-	size_t	i;
-
-	i = 0;
-	if (number < 0)
-		number *= -1;
-	number_str = ft_calloc((get_size(number, 1 / ft_strlen(base)) + 2),
-			sizeof(char));
-	if (!number_str)
-		return (NULL);
-	log = 1 / (double)ft_strlen(base);
-	while (number > 0)
-	{
-		*(number_str + i) = *(base + (int)(number / log));
-		number = number - (log * (int)(number / log));
-		log /= ft_strlen(base);
-		i++;
-	}
-	*(number_str + i) = '\0';
-	return (number_str);
-}
-
-static size_t	get_log(size_t n, float base_size)
-{
-	size_t	log;
+	unsigned long long	log;
 
 	log = 1;
-	if (base_size > 1)
+	while (n >= base_size)
 	{
-		while (n / (base_size * log) > 1)
-			log *= base_size;
-	}
-	else
-	{
-		while (n / (base_size * log) < 1)
-			log *= base_size;
+		log *= base_size;
+		n /= base_size;
+		//printf("computing log : %llu, n = %zu\n", log, n);
 	}
 	return (log);
 }
 
-static size_t	get_size(size_t n, float base_size)
+size_t	get_size(long long n, int base_size)
 {
 	size_t	size;
 
-	size = 0;
+	size = (n < 0);
+	//printf(" n is %lli in size\n", n);
+	if (n < 0)
+		n *= -1;
+	if (base_size <= 0)
+		return (0);
 	if (!n)
 		return (1);
-	if (n < 0)
-	{
-		size++;
-		n *= -1;
-	}
-	while (n >= (1 / base_size))
+	//printf("2 n is %lli in size\n", n);
+	while (n > 0)
 	{
 		size++;
 		n /= base_size;
@@ -106,7 +79,7 @@ static size_t	get_size(size_t n, float base_size)
 	return (size);
 }
 
-static size_t	handle_neg(long *number, char *number_str)
+size_t	handle_neg(long long *number, char *number_str)
 {
 	if (*number < 0)
 	{

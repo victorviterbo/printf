@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 17:12:43 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:05:23 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ size_t	print_format(char *str, va_list argl)
 
 	width = NULL;
 	precision = NULL;
+	if (!str)
+		return (0);
 	if (ft_strchr(str, '*'))
 	{
 		if (!ft_strchr(str, '.') || (ft_strchr(str, '*') < ft_strchr(str, '.')))
@@ -80,8 +82,10 @@ size_t	print_format(char *str, va_list argl)
 	//printf("formated = >%s<\n", formated);
 	//write(1, "2", 1);
 	formated = set_precision(formated, str, precision);
+	//printf("formated = >%s<\n", formated);
 	//write(1, "3", 1);
 	formated = set_width(formated, str, width);
+	//printf("formated = >%s<\n", formated);
 	//write(1, "4", 1);
 	write(1, formated, ft_strlen(formated));
 	printed = ft_strlen(formated);
@@ -98,19 +102,20 @@ char	*get_radix(char type, va_list argl)
 	if (type == 'c')
 		radix = ft_ctoa(va_arg(argl, int));
 	else if (type == 's')
+	{
 		radix = ft_strdup(va_arg(argl, char *));
-		printf("\nHELLO ?\n");
 		if (!radix)
 			return (ft_strdup("(null)"));
+	}
 	else if (type == 'p')
-		radix = ft_strjoin("0x", ft_itoa_base((long)va_arg(argl, void *),
+		radix = ft_strjoin("0x", ft_utoa_base((long)va_arg(argl, void *),
 					"0123456789abcdef"), 2);
 	else if (type == 'd')
 		radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'i')
 		radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'u')
-		radix = ft_utoa_base(va_arg(argl, int), "0123456789");
+		radix = ft_utoa_base((long)va_arg(argl, int), "0123456789");
 	else if (type == 'x')
 		radix = ft_itoa_base(va_arg(argl, unsigned int), "0123456789abcdef");
 	else if (type == 'X')
@@ -174,6 +179,7 @@ char	*set_width(char *formated, char *str, int *width)
 char	*set_precision(char *formated, char *str, int *precision)
 {
 	size_t	i;
+	char	*truncated;
 
 	if (!precision)
 	{
@@ -192,8 +198,12 @@ char	*set_precision(char *formated, char *str, int *precision)
 		else
 			*precision = ft_atoi(ft_substr(str, 0, i));
 	}
-	if (ft_strchr("s", *(str + ft_strlen(str) - 1)))
-		formated = ft_round(formated, *precision, *(str + ft_strlen(str) - 1));
+	if (*(str + ft_strlen(str) - 1))
+	{
+		truncated = ft_substr(formated, 0, *precision);
+		free(formated);
+		return (truncated);
+	}
 	free(precision);
 	return (formated);
 }

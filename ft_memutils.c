@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 11:56:16 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 16:31:01 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:15:28 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_memmove(void *dst, const void *src, size_t n)
 {
 	int						i;
 
-	if (!dst || ! src || n < 0)
+	if (!dst || !src || n < 0)
 		return (NULL);
 	if (src < dst && dst < src + n)
 	{

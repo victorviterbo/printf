@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:01:16 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 12:26:55 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:46:45 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
+#include <stdint.h>
+
 # include <stdio.h>
 
 int     ft_printf(const char *str, ...);
@@ -27,12 +29,13 @@ char    *get_radix(char type, va_list argl);
 char    *set_width(char *formated, char *str, int *width);
 char    *set_precision(char *formated, char *str, int *precision);
 int     ft_atoi(const char *str);
-char    *ft_ftoa_base(double number, char *base);
-char    *ft_round(char *str, int precision, char type);
 char    *ft_utoa_base(long number, char *base);
+size_t	get_usize(unsigned long long n, int base_size);
 char    *ft_ctoa(char c);
-char    *ft_itoa_base(long n, char *base);
-char    *ft_itoa_base_decimal(double number, char *base);
+char	*ft_itoa_base(long long n, char *base);
+size_t	get_log(size_t n, size_t base_size);
+size_t	get_size(long long n, int base_size);
+size_t	handle_neg(long long *number, char *number_str);
 char    *ft_strjoin(char const *s1, char const *s2, int in_place);
 char    *ft_strchr(const char *s, int c);
 char    *ft_substr(char const *s, unsigned int start, size_t len);

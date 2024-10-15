@@ -6,16 +6,15 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 16:21:37 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 19:47:37 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 int		ft_atoi(const char *str);
-char	*ft_ftoa_base(double number, char *base);
-char	*ft_round(char *str, int precision, char type);
 char	*ft_utoa_base(long number, char *base);
+size_t	get_usize(unsigned long long n, int base_size);
 char	*ft_ctoa(char c);
 
 int	ft_atoi(const char *str)
@@ -45,51 +44,61 @@ int	ft_atoi(const char *str)
 	return (sign * number);
 }
 
-char	*ft_ftoa_base(double number, char *base)
+char	*ft_utoa_base(long n, char *base)
 {
-	char	*integer;
-	char	*decimal;
-	long	rounded_num;
+	char				*number_str;
+	size_t				log;
+	size_t				i;
+	unsigned long long	number;
 
-	if (number < 0)
-		rounded_num = -(long)(-number);
-	else
-		rounded_num = (long)(number);
-	integer = ft_itoa_base(rounded_num, base);
-	if (rounded_num == number)
-		return (ft_strjoin(integer, ".000000", 1));
-	decimal = ft_itoa_base_decimal(number - rounded_num, base);
-	while (ft_strlen(decimal) < 6)
-		decimal = ft_strjoin(decimal, "0", 1);
-	integer = ft_strjoin(ft_strjoin(integer, ".", 1), decimal, 3);
-	return (integer);
-}
-
-char	*ft_round(char *str, int precision, char type)
-{
-	if (type == 's')
-		return (ft_substr(str, 0, precision));
-	else if ((long)ft_strlen(str) < (ft_strchr(str, '.') - str + precision + 1))
-		return (str);
-	else if (precision <= 0)
+	i = 0;
+	if (n < 0)
 	{
-		*(ft_strchr(str, '.') - 1) += (*(ft_strchr(str, '.') + 1) >= 5);
-		return (ft_substr(str, 0, ft_strchr(str, '.') - str));
+		//printf("number is now %li\n", n);
+		number = UINT64_MAX;
+		number = number + n + 1;
+		//printf("number is now %llu\n", number);
+		//printf("base is now >%s<\n", base);
 	}
 	else
+		number = n;
+	number_str = ft_calloc((get_usize(number, ft_strlen(base)) + 2), sizeof(char));
+	//printf("\n1, calloced %lu\n", (get_size(number, ft_strlen(base)) + 2));
+	if (!number_str)
+		return (NULL);
+	log = get_log(number, ft_strlen(base));
+	//printf("10\n");
+	while (log)
 	{
-		*(ft_strchr(str, '.') + precision) += (*(ft_strchr(str, '.')
-			+ precision + 1) >= 5);
-		return (ft_substr(str, 0, ft_strchr(str, '.') - str + precision + 1));
+		//printf("20, log is now %zu\n", log);
+		*(number_str + i) = *(base + number / log);
+		number %= log;
+		log /= ft_strlen(base);
+		i++;
 	}
+	*(number_str + i) = '\0';
+	return (number_str);
 }
 
-char	*ft_utoa_base(long number, char *base)
+size_t	get_usize(unsigned long long n, int base_size)
 {
-	if (number < 0)
-		return (ft_itoa_base((uint32_t)(number + UINT32_MAX + 1), base));
-	else
-		return (ft_itoa_base((uint32_t)(number), base));
+	size_t	size;
+
+	size = (n < 0);
+	//printf(" n is %lli in size\n", n);
+	if (n < 0)
+		n *= -1;
+	if (base_size <= 0)
+		return (0);
+	if (!n)
+		return (1);
+	//printf("2 n is %lli in size\n", n);
+	while (n > 0)
+	{
+		size++;
+		n /= base_size;
+	}
+	return (size);
 }
 
 char	*ft_ctoa(char c)
