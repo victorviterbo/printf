@@ -16,6 +16,7 @@
 		"utility": "c",
 		"vector": "c",
 		"stdio.h": "c",
-		"stdint.h": "c"
+		"stdint.h": "c",
+		"ostream": "c"
 	}
 }

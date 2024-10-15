@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 19:05:23 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:14:26 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,17 @@ int	ft_printf(const char *str, ...)
 		{
 			if (*(str + i) == '%')
 				i++;
-			write(1, (str + i), 1);
-			printed++;
+			if (write(1, (str + i), 1) != -1)
+				printed++;
 			i++;
+			//printf("\nprinted %zu char so far\n", printed);
 			continue ;
 		}
 		j = ++i;
 		while (*(str + j - 1) && !ft_strchr("cspdiuxX", *(str + j - 1)))
 			j++;
 		printed += print_format(ft_substr(str, i, j - i), argl);
+		//printf("\nprinted %zu char so far\n", printed);
 		i = j;
 	}
 	va_end(argl);
@@ -54,10 +56,11 @@ size_t	print_format(char *str, va_list argl)
 	char	*formated;
 	int		*width;
 	int		*precision;
-	size_t	printed;
+	long	printed;
 
 	width = NULL;
 	precision = NULL;
+	printed = 0;
 	if (!str)
 		return (0);
 	if (ft_strchr(str, '*'))
@@ -87,8 +90,16 @@ size_t	print_format(char *str, va_list argl)
 	formated = set_width(formated, str, width);
 	//printf("formated = >%s<\n", formated);
 	//write(1, "4", 1);
-	write(1, formated, ft_strlen(formated));
-	printed = ft_strlen(formated);
+	//if (write(1, formated, ft_strlen(formated)) != -1)
+	//{
+	//
+	//}
+	if (ft_strlen(formated) > 0)
+		printed = write(1, formated, ft_strlen(formated));//ft_strlen(formated);
+	else if (*(str + ft_strlen(str) - 1) == 'c')
+		printed = write(1, formated, 1);
+	if (printed < 0)
+		printed = 0;
 	free(str);
 	free(formated);
 	return (printed);
@@ -115,7 +126,7 @@ char	*get_radix(char type, va_list argl)
 	else if (type == 'i')
 		radix = ft_itoa_base(va_arg(argl, int), "0123456789");
 	else if (type == 'u')
-		radix = ft_utoa_base((long)va_arg(argl, int), "0123456789");
+		radix = ft_utoa_base((unsigned int)va_arg(argl, int), "0123456789");
 	else if (type == 'x')
 		radix = ft_itoa_base(va_arg(argl, unsigned int), "0123456789abcdef");
 	else if (type == 'X')
@@ -198,7 +209,7 @@ char	*set_precision(char *formated, char *str, int *precision)
 		else
 			*precision = ft_atoi(ft_substr(str, 0, i));
 	}
-	if (*(str + ft_strlen(str) - 1))
+	if (*(str + ft_strlen(str) - 1) == 's')
 	{
 		truncated = ft_substr(formated, 0, *precision);
 		free(formated);

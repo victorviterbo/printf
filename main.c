@@ -6,11 +6,11 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 09:24:56 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 19:26:14 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:11:45 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libc.h>
+#include <stdio.h>
 #include <float.h>
 #include <limits.h>
 #include "ft_printf.h"
@@ -32,6 +32,8 @@ int	main(void)
 	printf(" %c %c %c ", '0', 0, '1');
 	printf("\n><><><\n");
 	ft_printf(" %c %c %c ", '0', 0, '1');
+	printf("\n----------------------\n"); //OK !
+	printf("\ndiff between return values ar %i, %i\n", printf(" %c %c %c ", '0', 0, '1'), ft_printf(" %c %c %c ", '0', 0, '1'));
 	printf("\n----------------------\n"); //OK !
 	printf("%%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %c%%", 'A', "42", 42, 42 ,42 , 42, 42, 'B', "-42", -42, -42 ,-42 ,-42, 42, 'C', "0", 0, 0 ,0 ,0, 42, 0);
 	printf("\n><><><\n");
