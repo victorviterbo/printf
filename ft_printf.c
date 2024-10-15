@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:31:47 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:40:40 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,25 @@ int	ft_printf(const char *str, ...)
 {
 	size_t	printed;
 	size_t	i;
-	size_t	j;
 	va_list	argl;
 
 	printed = 0;
-	i = 0;
 	va_start(argl, str);
-	while (*(str + i))
+	while (*(str))
 	{
-		if (*(str + i) != '%' || (*(str + i) == '%' && *(str + i + 1) == '%'))
+		if (*(str) != '%' || (*(str) == '%' && *(str + 1) == '%'))
 		{
-			i += (*(str + i) == '%');
-			if (write(1, (str + i), 1) != -1)
+			str += (*(str) == '%');
+			if (write(1, (str), 1) != -1)
 				printed++;
-			i++;
+			str++;
 			continue ;
 		}
-		j = ++i;
-		while (*(str + j - 1) && !ft_strchr("cspdiuxX", *(str + j - 1)))
-			j++;
-		printed += print_format(ft_substr(str, i, j - i), argl);
-		i = j;
+		i = 0;
+		while (*(str + i) && !ft_strchr("cspdiuxX", *(str + i)))
+			i++;
+		printed += print_format(ft_substr(str, 0, i + 1), argl);
+		str += i + 1;
 	}
 	va_end(argl);
 	return (printed);
