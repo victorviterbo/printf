@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 12:10:07 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 16:21:37 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	ft_atoi(const char *str)
 		number = number * 10 + *(str + i) - '0';
 		i++;
 	}
+	free((void *)str);
 	return (sign * number);
 }
 
@@ -95,10 +96,10 @@ char	*ft_ctoa(char c)
 {
 	char	*str;
 
-	str = malloc(2 * sizeof(char));
+	str = ft_calloc(2, sizeof(char));
 	if (!str)
 		return (NULL);
-	*str = c;
+	*str = c % 256;
 	*(str + 1) = '\0';
 	return (str);
 }

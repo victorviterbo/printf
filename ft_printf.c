@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 13:28:50 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:12:43 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ size_t	print_format(char *str, va_list argl)
 	char	*formated;
 	int		*width;
 	int		*precision;
+	size_t	printed;
 
 	width = NULL;
 	precision = NULL;
@@ -61,14 +62,14 @@ size_t	print_format(char *str, va_list argl)
 	{
 		if (!ft_strchr(str, '.') || (ft_strchr(str, '*') < ft_strchr(str, '.')))
 		{
-			width = malloc(sizeof(int));
+			width = ft_calloc(1, sizeof(int));
 			if (!width)
 				return (0);
 			*width = va_arg(argl, int);
 		}
 		if (ft_strchr(str, '.') && ft_strchr(ft_strchr(str, '.'), '*'))
 		{
-			precision = malloc(sizeof(int));
+			precision = ft_calloc(1, sizeof(int));
 			if (!precision)
 				return (0);
 			*precision = va_arg(argl, int);
@@ -83,7 +84,10 @@ size_t	print_format(char *str, va_list argl)
 	formated = set_width(formated, str, width);
 	//write(1, "4", 1);
 	write(1, formated, ft_strlen(formated));
-	return (ft_strlen(formated));
+	printed = ft_strlen(formated);
+	free(str);
+	free(formated);
+	return (printed);
 }
 
 char	*get_radix(char type, va_list argl)
@@ -94,7 +98,10 @@ char	*get_radix(char type, va_list argl)
 	if (type == 'c')
 		radix = ft_ctoa(va_arg(argl, int));
 	else if (type == 's')
-		radix = va_arg(argl, char *);
+		radix = ft_strdup(va_arg(argl, char *));
+		printf("\nHELLO ?\n");
+		if (!radix)
+			return (ft_strdup("(null)"));
 	else if (type == 'p')
 		radix = ft_strjoin("0x", ft_itoa_base((long)va_arg(argl, void *),
 					"0123456789abcdef"), 2);
@@ -119,19 +126,27 @@ char	*set_width(char *formated, char *str, int *width)
 
 	i = -1;
 	flags = ft_strdup("\0");
+	if (!flags)
+		return (NULL);
 	if (!width)
 	{
 		while (ft_strchr("-+0 ", *(str + ++i)))
 			flags = ft_strjoin(flags, ft_ctoa(*(str + i)), 1);
-		str = ft_substr(str, i, ft_strlen(str) - i);
+		str += i;
 		i = 0;
 		while ('0' <= *(str + i) && *(str + i) <= '9')
 			i++;
 		if (i == 0)
+		{
+			free(flags);
 			return (formated);
-		width = malloc(sizeof(int));
+		}
+		width = ft_calloc(1, sizeof(int));
 		if (!width)
+		{
+			free(flags);
 			return (NULL);
+		}
 		*width = ft_atoi(ft_substr(str, 0, i));
 	}
 	if (ft_strchr(flags, '+') && ft_strchr("dixX", *(str + ft_strlen(str) - 1))
@@ -151,6 +166,8 @@ char	*set_width(char *formated, char *str, int *width)
 		else
 			formated = ft_strjoin(placeholder, formated, 2);
 	}
+	free(flags);
+	free(width);
 	return (formated);
 }
 
@@ -167,7 +184,7 @@ char	*set_precision(char *formated, char *str, int *precision)
 		i = 0;
 		while (*(str + i) && '0' <= *(str + i) && *(str + i) <= '9')
 			i++;
-		precision = malloc(sizeof(int));
+		precision = ft_calloc(1, sizeof(int));
 		if (!precision)
 			return (NULL);
 		if (i == 0)
@@ -177,5 +194,6 @@ char	*set_precision(char *formated, char *str, int *precision)
 	}
 	if (ft_strchr("s", *(str + ft_strlen(str) - 1)))
 		formated = ft_round(formated, *precision, *(str + ft_strlen(str) - 1));
+	free(precision);
 	return (formated);
 }

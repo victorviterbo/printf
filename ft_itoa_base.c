@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:28:28 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/14 21:39:01 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 16:30:32 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_itoa_base(long n, char *base)
 	long	number;
 
 	number = n;
-	number_str = malloc((get_size(number, ft_strlen(base)) + 2) * sizeof(char));
+	number_str = ft_calloc((get_size(number, ft_strlen(base)) + 2), sizeof(char));
 	if (!number_str)
 		return (NULL);
 	//printf("n is %i", n);
@@ -52,8 +52,8 @@ char	*ft_itoa_base_decimal(double number, char *base)
 	i = 0;
 	if (number < 0)
 		number *= -1;
-	number_str = malloc((get_size(number, 1 / ft_strlen(base)) + 2)
-			* sizeof(char));
+	number_str = ft_calloc((get_size(number, 1 / ft_strlen(base)) + 2),
+			sizeof(char));
 	if (!number_str)
 		return (NULL);
 	log = 1 / (double)ft_strlen(base);
