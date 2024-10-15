@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:40:40 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:48:21 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,21 @@ size_t	print_format(char *str, va_list argl)
 	printed = 0;
 	if (!str)
 		return (0);
-	if (ft_strchr(str, '*'))
+	if (ft_strchr(str, '*') && (!ft_strchr(str, '.')
+			|| (ft_strchr(str, '*') < ft_strchr(str, '.'))))
 	{
-		if (!ft_strchr(str, '.') || (ft_strchr(str, '*') < ft_strchr(str, '.')))
-		{
-			width = ft_calloc(1, sizeof(int));
-			if (!width)
-				return (0);
-			*width = va_arg(argl, int);
-		}
-		if (ft_strchr(str, '.') && ft_strchr(ft_strchr(str, '.'), '*'))
-		{
-			precision = ft_calloc(1, sizeof(int));
-			if (!precision)
-				return (0);
-			*precision = va_arg(argl, int);
-		}
+		width = ft_calloc(1, sizeof(int));
+		if (!width)
+			return (0);
+		*width = va_arg(argl, int);
+	}
+	if (ft_strchr(str, '*') && ft_strchr(str, '.')
+		&& ft_strchr(ft_strchr(str, '.'), '*'))
+	{
+		precision = ft_calloc(1, sizeof(int));
+		if (!precision)
+			return (0);
+		*precision = va_arg(argl, int);
 	}
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
 	formated = set_precision(formated, str, precision);
@@ -82,8 +81,6 @@ size_t	print_format(char *str, va_list argl)
 		printed = write(1, formated, ft_strlen(formated));
 	else if (*(str + ft_strlen(str) - 1) == 'c')
 		printed = write(1, formated, 1);
-	if (printed < 0)
-		printed = 0;
 	free(str);
 	free(formated);
 	return (printed);
