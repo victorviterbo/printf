@@ -6,12 +6,11 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 09:24:56 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:17:07 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:25:56 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <float.h>
+#include <libc.h>
 #include <limits.h>
 #include "ft_printf.h"
 
@@ -20,6 +19,8 @@ int	main(void)
 	void	*str;
 
 	str = malloc(sizeof(void));
+	printf("\n----------------------\n"); //OK !
+	printf("%i", printf("\001\002\007\v\010\f\r\n") - ft_printf("\001\002\007\v\010\f\r\n"));
 	printf("\n----------------------\n"); //OK !
 	printf("%s", (char *)NULL);
 	printf("\n><><><\n");

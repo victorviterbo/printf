@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:01:16 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 19:46:45 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:19:01 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char    *set_width(char *formated, char *str, int *width);
 char    *set_precision(char *formated, char *str, int *precision);
 int     ft_atoi(const char *str);
 char    *ft_utoa_base(long number, char *base);
-size_t	get_usize(unsigned long long n, int base_size);
+size_t	get_usize(unsigned long n, int base_size);
 char    *ft_ctoa(char c);
 char	*ft_itoa_base(long long n, char *base);
 size_t	get_log(size_t n, size_t base_size);

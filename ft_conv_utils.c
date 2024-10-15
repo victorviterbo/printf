@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:17:35 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:18:55 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ft_atoi(const char *str);
 char	*ft_utoa_base(long number, char *base);
-size_t	get_usize(unsigned long long n, int base_size);
+size_t	get_usize(unsigned long n, int base_size);
 char	*ft_ctoa(char c);
 
 int	ft_atoi(const char *str)
@@ -49,7 +49,7 @@ char	*ft_utoa_base(long n, char *base)
 	char				*number_str;
 	size_t				log;
 	size_t				i;
-	unsigned long long	number;
+	unsigned long		number;
 
 	i = 0;
 	if (n < 0)
@@ -59,7 +59,8 @@ char	*ft_utoa_base(long n, char *base)
 	}
 	else
 		number = n;
-	number_str = ft_calloc((get_usize(number, ft_strlen(base)) + 2), sizeof(char));
+	number_str = ft_calloc((get_usize(number, ft_strlen(base)) + 2)
+		, sizeof(char));
 	if (!number_str)
 		return (NULL);
 	log = get_log(number, ft_strlen(base));
@@ -74,7 +75,7 @@ char	*ft_utoa_base(long n, char *base)
 	return (number_str);
 }
 
-size_t	get_usize(unsigned long long n, int base_size)
+size_t	get_usize(unsigned long n, int base_size)
 {
 	size_t	size;
 
