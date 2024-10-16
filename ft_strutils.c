@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:34:17 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:17:04 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/16 14:53:46 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ char	*ft_strjoin(char const *s1, char const *s2, int in_place)
 	else
 		s2len = ft_strlen(s2);
 	joined = ft_calloc(ft_strlen(s1) + s2len + 1, sizeof(char));
-	if (!joined && in_place)
+	if (!joined && in_place != 0)
 	{
 		if (in_place == 1 || in_place == 3)
 			free((void *)s1);
-		else if (in_place == 2 || in_place == 3)
+		if (in_place == 2 || in_place == 3)
 			free((void *)s2);
 		return (NULL);
 	}
@@ -41,7 +41,7 @@ char	*ft_strjoin(char const *s1, char const *s2, int in_place)
 	*(joined + ft_strlen(s1) + s2len) = '\0';
 	if (in_place == 1 || in_place == 3)
 		free((void *)s1);
-	else if (in_place == 2 || in_place == 3)
+	if (in_place == 2 || in_place == 3)
 		free((void *)s2);
 	return (joined);
 }
