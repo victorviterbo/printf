@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 21:25:12 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:40:06 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ size_t	print_format(char *str, va_list argl);
 char	*get_radix(char type, va_list argl);
 char	*set_width(char *formated, char *str, int *width);
 char	*set_precision(char *formated, char *str, int *precision);
+size_t	set_flags(char *str, char **flags, char *formated);
 
 int	ft_printf(const char *str, ...)
 {
@@ -113,29 +114,21 @@ char	*set_width(char *formated, char *str, int *width)
 	char	*placeholder;
 	char	*flags;
 
-	i = 0;
-	flags = ft_strdup("\0");
-	if (!flags)
-		return (free(width), NULL);
+	i = set_flags(str, &flags, formated);
 	if (!*width)
 	{
-		while (ft_strchr("-+0 ", *(str++)))
-			flags = ft_strjoin(flags, ft_ctoa(*(str)), 1);
 		while ('0' <= *(str + i) && *(str + i) <= '9')
 			i++;
 		if (i == 0)
 			return (free(flags), free(width), formated);
 		*width = ft_atoi(ft_substr(str, 0, i));
 	}
-	if (ft_strchr(flags, '+') && ft_strchr("dixX", *(str + ft_strlen(str) - 1))
-		&& *formated != '-')
+	if (ft_strchr(flags, '+'))
 		formated = ft_strjoin("+", formated, 2);
-	else if (ft_strchr(flags, ' ') && !(ft_strchr("+-", *formated))
-		&& ft_strchr("dixX", *(str + ft_strlen(str) - 1)))
+	else if (ft_strchr(flags, ' '))
 		formated = ft_strjoin(" ", formated, 2);
 	placeholder = " ";
-	if (ft_strchr(flags, '0') && ft_strchr("dixX", *(str + ft_strlen(str) - 1))
-		&& !(ft_strchr(flags, '-')) && !(ft_strchr(str, '.')))
+	if (ft_strchr(flags, '0'))
 		placeholder = "0";
 	while (ft_strlen(formated) < (size_t) * width && ft_strchr(flags, '-'))
 		formated = ft_strjoin(formated, placeholder, 1);
@@ -169,4 +162,36 @@ char	*set_precision(char *formated, char *str, int *precision)
 		return (free(formated), truncated);
 	}
 	return (free(precision), formated);
+}
+
+size_t	set_flags(char *str, char **flags, char *formated)
+{
+	size_t	i;
+	char	type;
+
+	*flags = ft_calloc(1, 1);
+	if (!flags)
+		return (0);
+	type = *(str + ft_strlen(str) - 1);
+	i = 1;
+	while (ft_strchr("-+0 ", *(str + i)))
+	{
+		printf("PARSING >%c<\n", *(str + i));
+		*flags = ft_strjoin(*flags, ft_ctoa(*(str + i)), 1);
+		i++;
+	}
+	printf("FLAGS ARE NOW >%s<, str was >%s<\n", *flags, str);
+	if (ft_strchr(*flags, '+') && (!ft_strchr("di", type)
+			|| *formated == '-'))
+		*ft_strchr(*flags, '+') = '!';
+	if (ft_strchr(*flags, ' ') && ((*formated != '-')
+			|| !ft_strchr("di", type)))
+		*ft_strchr(*flags, ' ') = '!';
+	if (ft_strchr(*flags, '0') && (type == 'c' || ft_strchr(str, '.')
+			|| ((ft_strchr(*flags, '-')) && !ft_strchr("sp", type))))
+		*ft_strchr(*flags, '0') = '!';
+	if (ft_strchr(*flags, '#') && type != 'x' && type != 'X')
+		*ft_strchr(*flags, '#') = '!';
+	printf("FLAGS AT THE END: >%s<, str was >%s<\n", *flags, str);
+	return (i);
 }
