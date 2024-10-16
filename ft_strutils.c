@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:34:17 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/16 16:16:33 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:18:48 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strjoin(char const *s1, char const *s2, int in_place);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *str);
-char	*ft_strdup(const char *s1);
+char	*ft_strdup(const char *s1, int null);
 
 char	*ft_strjoin(char const *s1, char const *s2, int in_place)
 {
@@ -70,6 +70,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*substr;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	substr = ft_calloc((len + 1), sizeof(char));
 	if (!substr)
 		return (NULL);
@@ -95,10 +97,12 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1, int null)
 {
 	char	*duplicate;
 
+	if (!s1 && null)
+		return (ft_strdup("(null)", 0));
 	if (!s1)
 		return (NULL);
 	duplicate = ft_calloc(ft_strlen(s1) + 1, sizeof(char));

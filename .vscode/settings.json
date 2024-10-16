@@ -18,6 +18,7 @@
 		"stdio.h": "c",
 		"stdint.h": "c",
 		"ostream": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"unistd.h": "c"
 	}
 }

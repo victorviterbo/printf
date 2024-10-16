@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:01:16 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/16 15:08:05 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:19:37 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_strjoin(char const *s1, char const *s2, int in_place);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *str);
-char	*ft_strdup(const char *s1);
+char	*ft_strdup(const char *s1, int null);
 void	*ft_memmove(void *dst, const void *src, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 

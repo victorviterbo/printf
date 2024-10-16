@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/16 16:45:41 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:40:24 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 int		ft_printf(const char *str, ...);
 size_t	print_format(char *str, va_list argl);
 char	*get_radix(char type, va_list argl);
-char	*set_width(char *formated, char *str, int *width);
-char	*set_precision(char *formated, char *str, int *precision);
-size_t	set_flags(char *str, char **flags, char *formated);
 
 int	ft_printf(const char *str, ...)
 {
@@ -27,7 +24,7 @@ int	ft_printf(const char *str, ...)
 
 	printed = 0;
 	if (!str)
-		return (NULL);
+		return (0);
 	va_start(argl, str);
 	while (*(str))
 	{
@@ -70,11 +67,7 @@ char	*get_radix(char type, va_list argl)
 	if (type == 'c')
 		radix = ft_ctoa(va_arg(argl, int));
 	else if (type == 's')
-	{
-		radix = ft_strdup(va_arg(argl, char *));
-		if (!radix)
-			return (ft_strdup("(null)"));
-	}
+		radix = ft_strdup(va_arg(argl, char *), 1);
 	else if (type == 'p')
 		radix = ft_strjoin("0x", ft_utoa_base((long)va_arg(argl, void *),
 					"0123456789abcdef"), 2);
