@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/16 16:44:30 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:45:41 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ int	ft_printf(const char *str, ...)
 	va_start(argl, str);
 	while (*(str))
 	{
-		if (*(str) != '%')// || (*(str) == '%' && *(str + 1) == '%'))
+		if (*(str) != '%')
 		{
-			//str += (*(str) == '%');
 			if (write(1, (str), 1) != -1)
 				printed++;
 			str++;
