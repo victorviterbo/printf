@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:01:16 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/30 19:12:48 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:24:26 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
-
-
-
-#include <libc.h>
-
-
-
-
 
 int		ft_printf(const char *str, ...);
 size_t	print_format(const char **str, va_list argl);
