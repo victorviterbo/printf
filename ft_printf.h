@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 09:01:16 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/16 17:19:37 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:12:48 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,16 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+
+
+#include <libc.h>
+
+
+
+
+
 int		ft_printf(const char *str, ...);
-size_t	print_format(char *str, va_list argl);
+size_t	print_format(const char **str, va_list argl);
 char	*get_radix(char type, va_list argl);
 char	*set_width(char *formated, char *str, int *width);
 char	*set_precision(char *formated, char *str, int *precision);

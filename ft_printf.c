@@ -6,21 +6,20 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/30 18:41:20 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:13:48 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 int		ft_printf(const char *str, ...);
-size_t	print_format(char *str, va_list argl);
+size_t	print_format(const char **str, va_list argl);
 char	*get_radix(char type, va_list argl);
 
 int	ft_printf(const char *str, ...)
 {
 	size_t	printed;
 	int		tmp;
-	size_t	i;
 	va_list	argl;
 
 	if (!str)
@@ -34,48 +33,44 @@ int	ft_printf(const char *str, ...)
 			if (write(1, str, 1) != -1)
 				printed++;
 			else
-			{
-				va_end(argl);
-				return (-1);
-			}
+				return (va_end(argl), -1);
 			str++;
 			continue ;
 		}
-		i = 1;
-		while (*(str + i) && !ft_strchr("cspdiuxX%", *(str + i)))
-			i++;
-		tmp = print_format(ft_substr(str, 0, i + 1), argl);
+		tmp = print_format(&str, argl);
 		if (tmp == -1)
-		{
-			va_end(argl);
-			return (-1);
-		}
+			return (va_end(argl), -1);
 		printed += tmp;
-		str += i + 1;
 	}
 	va_end(argl);
 	return (printed);
 }
 
-size_t	print_format(char *str, va_list argl)
+size_t	print_format(const char **str, va_list argl)
 {
 	char	*formated;
 	long	printed;
+	size_t	i;
+	char	*substr;
 
 	printed = 0;
-	if (!str)
+	if (!*str)
 		return (-1);
-	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
+	i = 1;
+	while (*(*str + i) && !ft_strchr("cspdiuxX%", *(*str + i)))
+		i++;
+	substr = ft_substr(*str, 0, i + 1);
+	if (!substr)
+		return (-1);
+	formated = get_radix(*(substr + ft_strlen(substr) - 1), argl);
 	if (!formated)
-	{
-		free(str);
-		return (-1);
-	}
+		return (free(substr), -1);
 	if (ft_strlen(formated))
 		printed = write(1, formated, ft_strlen(formated));
-	else if (*(str + ft_strlen(str) - 1) == 'c')
+	else if (*(substr + ft_strlen(substr) - 1) == 'c')
 		printed = write(1, formated, 1);
-	return (free(str), free(formated), printed);
+	*str += i + 1;
+	return (free(substr), free(formated), printed);
 }
 
 char	*get_radix(char type, va_list argl)
