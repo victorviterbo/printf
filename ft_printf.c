@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/16 17:40:24 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:18:28 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*get_radix(char type, va_list argl);
 int	ft_printf(const char *str, ...)
 {
 	size_t	printed;
+	int		tmp;
 	size_t	i;
 	va_list	argl;
 
@@ -30,15 +31,23 @@ int	ft_printf(const char *str, ...)
 	{
 		if (*(str) != '%')
 		{
-			if (write(1, (str), 1) != -1)
+			if (write(1, str, 1) != -1)
 				printed++;
+			else
+				return (-1);
 			str++;
 			continue ;
 		}
 		i = 1;
 		while (*(str + i) && !ft_strchr("cspdiuxX%", *(str + i)))
 			i++;
-		printed += print_format(ft_substr(str, 0, i + 1), argl);
+		tmp = print_format(ft_substr(str, 0, i + 1), argl);
+		if (tmp == -1)
+		{
+			va_end(argl);
+			return (-1);
+		}
+		printed += tmp;
 		str += i + 1;
 	}
 	va_end(argl);
@@ -51,7 +60,14 @@ size_t	print_format(char *str, va_list argl)
 	long	printed;
 
 	printed = 0;
+	if (!str)
+		return (-1);
 	formated = get_radix(*(str + ft_strlen(str) - 1), argl);
+	if (!formated)
+	{
+		free(str);
+		return (-1);
+	}
 	if (ft_strlen(formated))
 		printed = write(1, formated, ft_strlen(formated));
 	else if (*(str + ft_strlen(str) - 1) == 'c')
