@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/12/10 13:03:17 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:06:10 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_utoa_base(unsigned long number, char *base)
 			sizeof(char));
 	if (!number_str)
 		return (NULL);
-	log = get_log(number, ft_strlen(base));
+	log = ft_log_base(number, ft_strlen(base));
 	while (log)
 	{
 		*(number_str + i) = *(base + number / log);
