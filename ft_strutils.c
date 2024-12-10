@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 11:34:17 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/10/15 20:17:04 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:25:03 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,26 @@ char	*ft_strjoin(char const *s1, char const *s2, int in_place);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *str);
-char	*ft_strdup(const char *s1);
+char	*ft_strdup(const char *s1, int null);
 
 char	*ft_strjoin(char const *s1, char const *s2, int in_place)
 {
 	char	*joined;
-	size_t	s2len;
 
-	if (ft_strchr(s2, '\n'))
-		s2len = (size_t)(ft_strchr(s2, '\n') - (char *)s2) + 1;
-	else
-		s2len = ft_strlen(s2);
-	joined = ft_calloc(ft_strlen(s1) + s2len + 1, sizeof(char));
-	if (!joined && in_place)
+	joined = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
+	if (!joined || !s1 || !s2)
 	{
 		if (in_place == 1 || in_place == 3)
 			free((void *)s1);
 		else if (in_place == 2 || in_place == 3)
 			free((void *)s2);
+		if (joined)
+			free(joined);
 		return (NULL);
 	}
 	ft_memmove(joined, s1, ft_strlen(s1));
-	ft_memmove(joined + ft_strlen(s1), s2, s2len);
-	*(joined + ft_strlen(s1) + s2len) = '\0';
+	ft_memmove(joined + ft_strlen(s1), s2, ft_strlen(s2));
+	*(joined + ft_strlen(s1) + ft_strlen(s2)) = '\0';
 	if (in_place == 1 || in_place == 3)
 		free((void *)s1);
 	else if (in_place == 2 || in_place == 3)
@@ -70,6 +67,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*substr;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	substr = ft_calloc((len + 1), sizeof(char));
 	if (!substr)
 		return (NULL);
@@ -95,10 +94,12 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1, int null)
 {
 	char	*duplicate;
 
+	if (!s1 && null)
+		return (ft_strdup("(null)", 0));
 	if (!s1)
 		return (NULL);
 	duplicate = ft_calloc(ft_strlen(s1) + 1, sizeof(char));
