@@ -6,7 +6,7 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 11:01:06 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/12/10 14:14:00 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/30 19:24:21 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ char	*get_radix(char type, va_list argl)
 	if (type == 'c')
 		radix = ft_ctoa(va_arg(argl, int));
 	else if (type == 's')
-		radix = ft_strdup_pf(va_arg(argl, char *), 1);
+		radix = ft_strdup(va_arg(argl, char *), 1);
 	else if (type == 'p')
-		radix = ft_strjoin_ip("0x", ft_utoa_base((long)va_arg(argl, void *),
+		radix = ft_strjoin("0x", ft_utoa_base((long)va_arg(argl, void *),
 					"0123456789abcdef"), 2);
 	else if (type == 'd')
 		radix = ft_itoa_base(va_arg(argl, int), "0123456789");

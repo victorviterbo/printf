@@ -6,13 +6,13 @@
 #    By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 12:45:22 by vviterbo          #+#    #+#              #
-#    Updated: 2024/10/16 15:08:52 by vviterbo         ###   ########.fr        #
+#    Updated: 2024/10/31 16:07:18 by vviterbo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRCS = ft_conv_utils.c ft_itoa_base.c ft_printf.c ft_strutils.c ft_memutils.c
+SRCS = ft_conv_utils.c ft_itoa_base.c ft_memutils.c ft_printf.c ft_strutils.c
 
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 
@@ -26,7 +26,6 @@ all: $(NAME)
 
 clean :
 	@rm -f $(OBJS)
-	@rm -f $(OBJS_BONUS)
 
 fclean : clean
 	@rm -f $(NAME)
@@ -40,4 +39,4 @@ $(OBJS) : $(SRCS)
 	@$(CC) $(CFLAGS) -c $(SRCS) -I$(HEADER)
 
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

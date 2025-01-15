@@ -6,14 +6,43 @@
 /*   By: vviterbo <vviterbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 15:24:38 by vviterbo          #+#    #+#             */
-/*   Updated: 2024/12/10 13:06:10 by vviterbo         ###   ########.fr       */
+/*   Updated: 2024/10/16 14:06:09 by vviterbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char			*ft_utoa_base(unsigned long number, char *base);
-static size_t	get_usize(unsigned long n, int base_size);
+int		ft_atoi(const char *str);
+char	*ft_utoa_base(unsigned long number, char *base);
+size_t	get_usize(unsigned long n, int base_size);
+char	*ft_ctoa(char c);
+
+int	ft_atoi(const char *str)
+{
+	size_t	i;
+	int		sign;
+	int		number;
+
+	i = 0;
+	sign = 1;
+	number = 0;
+	while ((9 <= *(str + i) && *(str + i) <= 13) || *(str + i) == 32)
+		i++;
+	if (*str == '-')
+	{
+		sign *= -1;
+		i++;
+	}
+	else if (*str == '+')
+		i++;
+	while (*(str + i) && '0' <= *(str + i) && *(str + i) <= '9')
+	{
+		number = number * 10 + *(str + i) - '0';
+		i++;
+	}
+	free((void *)str);
+	return (sign * number);
+}
 
 char	*ft_utoa_base(unsigned long number, char *base)
 {
@@ -26,7 +55,7 @@ char	*ft_utoa_base(unsigned long number, char *base)
 			sizeof(char));
 	if (!number_str)
 		return (NULL);
-	log = ft_log_base(number, ft_strlen(base));
+	log = get_log(number, ft_strlen(base));
 	while (log)
 	{
 		*(number_str + i) = *(base + number / log);
@@ -38,7 +67,7 @@ char	*ft_utoa_base(unsigned long number, char *base)
 	return (number_str);
 }
 
-static size_t	get_usize(unsigned long n, int base_size)
+size_t	get_usize(unsigned long n, int base_size)
 {
 	size_t	size;
 
